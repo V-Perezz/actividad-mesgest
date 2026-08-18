@@ -23,24 +23,18 @@ function App() {
     setError("");
     setParticipante(null);
 
-    const { data, error } = await supabase.rpc(
-      "buscar_participante",
-      {
-        nombre_buscado: nombreLimpio,
-      }
-    );
+    const { data, error } = await supabase.rpc("buscar_participante", {
+      nombre_buscado: nombreLimpio,
+    });
 
     if (error) {
-      console.error(error);
       setError("Ocurrió un error. Intenta nuevamente.");
       setCargando(false);
       return;
     }
 
     if (!data || data.length === 0) {
-      setError(
-        "No encontramos ese nombre. Verifica que esté escrito correctamente."
-      );
+      setError("No encontramos ese nombre. Verifica que esté escrito correctamente.");
       setCargando(false);
       return;
     }
@@ -59,24 +53,14 @@ function App() {
   return (
     <main className="app">
       <div className="card">
-
         {!participante ? (
           <>
-            <div className="logo">
-              MESGEST
-            </div>
-
+            <div className="logo">MESGEST</div>
             <h1>¡Bienvenido!</h1>
-
-            <p className="descripcion">
-              Escribe tu primer nombre para continuar.
-            </p>
+            <p className="descripcion">Escribe tu primer nombre para continuar.</p>
 
             <form onSubmit={buscarParticipante}>
-              <label htmlFor="nombre">
-                Primer nombre
-              </label>
-
+              <label htmlFor="nombre">Primer nombre</label>
               <input
                 id="nombre"
                 type="text"
@@ -85,93 +69,73 @@ function App() {
                 onChange={(e) => setNombre(e.target.value)}
                 autoComplete="off"
               />
-
-              <button
-                type="submit"
-                disabled={cargando}
-              >
+              <button type="submit" disabled={cargando}>
                 {cargando ? "Buscando..." : "Continuar"}
               </button>
             </form>
 
-            {error && (
-              <div className="error">
-                {error}
-              </div>
-            )}
+            {error && <div className="error">{error}</div>}
           </>
         ) : (
           <>
-            <div className="success-icon">
-              ✓
-            </div>
-
-            <h1>
-              ¡Hola, {participante.nombre.split(" ")[0]}!
-            </h1>
-
-            <p className="descripcion">
-              Estos son tus datos de acceso.
-            </p>
+            <div className="success-icon">✓</div>
+            <h1>¡Hola, {participante.nombre.split(" ")[0]}!</h1>
+            <p className="descripcion">Estos son tus datos de acceso.</p>
 
             <div className="datos">
-
               <div className="dato">
                 <span>Casa Salesiana</span>
-                <strong>
-                  {participante.casa_salesiana}
-                </strong>
+                <strong>{participante.casa_salesiana}</strong>
               </div>
 
               <div className="dato">
                 <span>Nombre</span>
-                <strong>
-                  {participante.nombre}
-                </strong>
+                <strong>{participante.nombre}</strong>
               </div>
 
               <div className="dato">
                 <span>Correo</span>
-                <strong>
-                  {participante.correo}
-                </strong>
-              </div>
-
-              <div className="dato">
-                <span>Contraseña</span>
-
-                <div className="password-row">
-                  <strong>
-                    {mostrarContrasena
-                      ? participante.contrasena
-                      : "••••••••••••"}
-                  </strong>
-
+                <div className="row">
+                  <strong>{participante.correo}</strong>
                   <button
                     type="button"
                     className="secondary"
-                    onClick={() =>
-                      setMostrarContrasena(!mostrarContrasena)
-                    }
+                    onClick={() => navigator.clipboard.writeText(participante.correo)}
                   >
-                    {mostrarContrasena
-                      ? "Ocultar"
-                      : "Mostrar"}
+                    Copiar correo
                   </button>
                 </div>
               </div>
 
+              <div className="dato">
+                <span>Contraseña</span>
+                <div className="row">
+                  <strong>
+                    {mostrarContrasena ? participante.contrasena : "••••••••••••"}
+                  </strong>
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={() => setMostrarContrasena(!mostrarContrasena)}
+                  >
+                    {mostrarContrasena ? "Ocultar" : "Mostrar"}
+                  </button>
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={() => navigator.clipboard.writeText(participante.contrasena)}
+                  >
+                    Copiar contraseña
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <button
-              className="secondary full"
-              onClick={reiniciar}
-            >
+            <button className="secondary full" onClick={reiniciar}>
               Volver
             </button>
           </>
         )}
-
       </div>
     </main>
   );
