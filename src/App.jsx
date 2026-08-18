@@ -7,7 +7,6 @@ function App() {
   const [participante, setParticipante] = useState(null);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState("");
-  const [mostrarContrasena, setMostrarContrasena] = useState(false);
 
   const buscarParticipante = async (e) => {
     e.preventDefault();
@@ -47,7 +46,6 @@ function App() {
     setNombre("");
     setParticipante(null);
     setError("");
-    setMostrarContrasena(false);
   };
 
   return (
@@ -96,7 +94,7 @@ function App() {
               <div className="dato">
                 <span>Correo</span>
                 <div className="row">
-                  <strong>{participante.correo}</strong>
+                  <strong>••••••••••••</strong>
                   <button
                     type="button"
                     className="secondary"
@@ -110,16 +108,7 @@ function App() {
               <div className="dato">
                 <span>Contraseña</span>
                 <div className="row">
-                  <strong>
-                    {mostrarContrasena ? participante.contrasena : "••••••••••••"}
-                  </strong>
-                  <button
-                    type="button"
-                    className="secondary"
-                    onClick={() => setMostrarContrasena(!mostrarContrasena)}
-                  >
-                    {mostrarContrasena ? "Ocultar" : "Mostrar"}
-                  </button>
+                  <strong>••••••••••••</strong>
                   <button
                     type="button"
                     className="secondary"
